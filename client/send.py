@@ -1,6 +1,10 @@
 import asyncio
+import random
+from time import sleep
 
 import aio_pika
+
+from MessageData import MessageData
 
 
 async def main() -> None:
@@ -9,15 +13,18 @@ async def main() -> None:
     )
 
     async with connection:
+        message = MessageData().get_json()
         routing_key = "hello"
 
         channel = await connection.channel()
 
         await channel.default_exchange.publish(
-            aio_pika.Message(body=f"Hello {routing_key}".encode()),
+            aio_pika.Message(body=message.encode()),
             routing_key=routing_key,
         )
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    while True:
+        asyncio.run(main())
+        sleep(random.randint(3, 10))
