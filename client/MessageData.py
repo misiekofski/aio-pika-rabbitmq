@@ -1,14 +1,14 @@
 import datetime
+import time
 import json
 
 from faker import Faker
-import random
 
 
 class MessageData:
     def __init__(self):
         fake = Faker()
-        self.timestamp = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S.%f")
+        self.current_date = datetime.datetime.now()
         self.email = fake.email()
         self.username = fake.first_name()
         self.first_name = fake.first_name()
@@ -19,7 +19,7 @@ class MessageData:
 
     def get_json(self):
         message = {
-            'timestamp': self.timestamp,
+            'timestamp': datetime.datetime.timestamp(self.current_date)*1000,
             'email': self.email,
             'username': self.first_name,
             'first_name': self.first_name,
